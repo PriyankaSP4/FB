@@ -1,13 +1,13 @@
 package com.example.fizzbuzz
 
 fun main() {
-
+    // Generate output
     for (x in 1..200) {
         var word: String = ""
         // adds Fizz for 3
         if (x%3 == 0) {
             word += "Fizz"
-            }
+        }
         // adds Fezz for 13, after 3 but before everything else
         if (x%13 == 0) {
             word = "Fezz"
