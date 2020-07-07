@@ -3,45 +3,44 @@ package com.example.fizzbuzz
 fun main() {
     // Generate output
     for (x in 1..200) {
-        var word: String = ""
+        var words = mutableListOf<String>()
         // adds Fizz for 3
         if (x%3 == 0) {
-            word += "Fizz"
+            words.add("Fizz")
         }
         // adds Fezz for 13, after 3 but before everything else
         if (x%13 == 0) {
-            word = "Fezz"
+            words.add("Fezz")
         }
         // adds Buzz for 5
         if (x%5 == 0) {
-            word += "Buzz"
+            words.add("Buzz")
         }
         // adds Bang for 7
         if (x%7 == 0) {
-            word += "Bang"
+            words.add("Bang")
         }
         // changes to only Bong for 11, or adds Bong if 13 also
         if (x%11 == 0) {
             if (x%13 == 0) {
-                word = "FezzBong"
+                words = mutableListOf("Fezz", "Bong")
             } else {
-                word = "Bong"
+                words = mutableListOf("Bong")
             }
         }
-        // reverses for 17
+        //reverses for 17
         if (x%17 == 0) {
-            var chunks = word.chunked(4)
-            chunks = chunks.asReversed()
-            word = ""
-            for (chunk in chunks) {
-                word += chunk
+            words.asReversed()
+        }
+        // prints required output
+        var phrase = ""
+        for (word in words) {
+                phrase += word
             }
-        }
-        if (word == "") {
-            print(x)
+        if (phrase == ""){
+            println(x)
         } else {
-            print("$word")
+            println(phrase)
         }
-        print (" ")
     }
 }

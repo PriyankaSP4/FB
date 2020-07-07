@@ -6,7 +6,7 @@ fun main() {
     print("Up to what number do you want to print output?: ")
     val max = Integer.valueOf(readLine())
     var rules = mutableListOf<String?>()
-    print("Which rule would you like to implement? Enter the associated number: ")
+    print("Which rule would you like to implement? Enter the associated number (3, 5, 7, 11, 13): ")
     val rule1 = readLine()
     rules.add(rule1)
     var more: String? = "Y"
@@ -21,51 +21,50 @@ fun main() {
     }
 
     // Generate output
-    for (x in 1..max) {
-        var word: String = ""
+    for (x in 1..200) {
+        var words = mutableListOf<String>()
         // adds Fizz for 3
-        if (rules.contains("3") && x % 3 == 0) {
-            word += "Fizz"
+        if (rules.contains("3") && x%3 == 0) {
+            words.add("Fizz")
         }
         // adds Fezz for 13, after 3 but before everything else
-        if (rules.contains("13") && x % 13 == 0) {
-            word = "Fezz"
+        if (rules.contains("13") && x%13 == 0) {
+            words.add("Fezz")
         }
         // adds Buzz for 5
-        if (rules.contains("5") && x % 5 == 0) {
-            word += "Buzz"
+        if (rules.contains("5") && x%5 == 0) {
+            words.add("Buzz")
         }
         // adds Bang for 7
-        if (rules.contains("7") && x % 7 == 0) {
-            word += "Bang"
+        if (rules.contains("7") && x%7 == 0) {
+            words.add("Bang")
         }
         // changes to only Bong for 11, or adds Bong if 13 also
-        if (rules.contains("11") && x % 11 == 0) {
-            if (rules.contains("13") && x % 13 == 0) {
-                word = "FezzBong"
+        if (rules.contains("11") && x%11 == 0) {
+            if (rules.contains("13") && x%13 == 0) {
+                words = mutableListOf("Fezz", "Bong")
             } else {
-                word = "Bong"
+                words = mutableListOf("Bong")
             }
         }
-        // reverses for 17
-        if (rules.contains("17") && x % 17 == 0) {
-            var chunks = word.chunked(4)
-            chunks = chunks.asReversed()
-            word = ""
-            for (chunk in chunks) {
-                word += chunk
-            }
+        //reverses for 17
+        if (rules.contains("17") && x%17 == 0) {
+            words.asReversed()
         }
-        if (word == "") {
-            print(x)
+        // prints required output
+        var phrase = ""
+        for (word in words) {
+            phrase += word
+        }
+        if (phrase == ""){
+            println(x)
         } else {
-            print("$word")
+            println(phrase)
         }
-        print (" ")
     }
+
 }
 */
-
 fun main() {
     // Get max output
     print("Up to what number do you want to print output?: ")
@@ -75,26 +74,54 @@ fun main() {
     print("How many rules would you like to implement? ")
     val tot = Integer.valueOf(readLine())
     var divs = mutableListOf<Int>()
-    var phrases = mutableListOf<String?>()
+    var phrases = mutableListOf<List<String?>>()
     for (x in 1..tot) {
         print("Rule $x - what number would you like to use as the divisor? ")
         divs.add(Integer.valueOf(readLine()))
-        print("What four letter word would you like to print if the number is divisible by this number? ")
-        phrases.add(readLine())
+        print("If a number is divisible by this divisor, do you want to:\nA) add a word to start of the phrase\nB) add a word to the of the phrase\nC) only print the word associated with this divisor and no others\nD) reverse the order of words")
+        val aim = readLine()
+        var phrase: String? = " "
+        if (aim != "D") {
+            print("What word would you like to associate with this divisor? ")
+            phrase = readLine()
+        }
+        val indic = listOf(aim, phrase)
+        phrases.add(indic)
     }
 
     //Generate output
     for (num in 1..max) {
-        var word = ""
+        var words = mutableListOf<String?>()
+        var reverse: String = ""
         for (index in phrases.indices) {
             if (num % divs[index] == 0) {
-                word += phrases[index]
+                var specific_phrase = phrases[index]
+                if (specific_phrase[0] == "A") {
+                    words.add(0, specific_phrase[1])
+                } else if (specific_phrase[0] == "B") {
+                    words.add(specific_phrase[1])
+                } else if (specific_phrase[0] == "C") {
+                    words = mutableListOf(specific_phrase[1])
+                    break
+                } else {
+                    reverse = "Y"
+                }
             }
         }
-        if (word == "") {
-            print("$num ")
-        } else {
-            print("$word ")
+        if (reverse == "Y") {
+            words = words.asReversed()
+        }
+
+        // prints required output
+        var phrase = ""
+        for (word in words) {
+                phrase += word
+            }
+            if (phrase == "") {
+                println(num)
+            } else {
+                println(phrase)
+            }
         }
     }
-}
+

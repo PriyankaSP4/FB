@@ -3,14 +3,13 @@ package com.example.fizzbuzz
 fun main() {
     for (x in 1..100) {
         if (x%15 == 0) {
-            print("FizzBuzz")
+            println("FizzBuzz")
         } else if (x%3 == 0) {
-            print("Fizz")
+            println("Fizz")
         } else if (x%5 == 0) {
-            print ("Buzz")
+            println("Buzz")
         } else {
-            print(x)
+            println(x)
         }
-        print(' ')
     }
 }
