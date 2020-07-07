@@ -16,7 +16,12 @@ fun main() {
         if (x%7 == 0) {
             words.add("Bang")
         }
-        // adds Fezz for 13, after 3 but before everything else
+        // changes to only Bong for 11
+        if (x%11 == 0) {
+            words = mutableListOf("Bong")
+        }
+
+        // adds Fezz for 13, after F words but before B words
         if (x%13 == 0) {
             var pos = words.size
             for (item in words) {
@@ -28,14 +33,6 @@ fun main() {
                 }
             }
             words.add(pos, "Fezz")
-        }
-        // changes to only Bong for 11, or adds Bong if 13 also
-        if (x%11 == 0) {
-            if (x%13 == 0) {
-                words = mutableListOf("Fezz", "Bong")
-            } else {
-                words = mutableListOf("Bong")
-            }
         }
         //reverses for 17
         if (x%17 == 0) {
