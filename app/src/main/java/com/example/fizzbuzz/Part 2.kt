@@ -6,7 +6,7 @@ fun main() {
     // Generate output
     fun addWord(w: String, l: MutableList<String>): Boolean = l.add(w)
 
-    for (x in 1..4) {
+    for (x in 1..200) {
         var words = mutableListOf<String>()
         // adds Fizz for 3
         if (x%3 == 0) addWord("Fizz", words)
