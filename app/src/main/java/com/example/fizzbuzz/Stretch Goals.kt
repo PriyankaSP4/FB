@@ -104,17 +104,19 @@ fun main() {
 
     for (x in 1..tot) {
         var aim = getInput("Rule $x: what type of rule would you like to implement?\nA) add a word to the end of a phrase\nB) add a word after F-words but before B-words \nC) return only one word and then any words from later rules\nD) reverse the order of words")
+        var num = Integer.valueOf(getInput("What number would you like to use as the divisor? "))
+        var word = getInput("What word would you like to associate with this divisor? (N/A if option D) ")
         if (aim == "A") {
-            val rule = addWord(Integer.valueOf(getInput("What number would you like to use as the divisor? ")), getInput("What word would you like to associate with this divisor? "))
+            val rule = addWord(num, word)
             rules = (rules + rule) as MutableList<(Int, MutableList<String>) -> MutableList<String>>
         } else if (aim == "B") {
-            val rule = betweenFandB(Integer.valueOf(getInput("What number would you like to use as the divisor? ")), getInput("What word would you like to associate with this divisor? "))
+            val rule = betweenFandB(num, word)
             rules = (rules + rule) as MutableList<(Int, MutableList<String>) -> MutableList<String>>
         } else if (aim == "C") {
-            val rule = singleWord(Integer.valueOf(getInput("What number would you like to use as the divisor? ")), getInput("What word would you like to associate with this divisor? "))
+            val rule = singleWord(num, word)
             rules = (rules + rule) as MutableList<(Int, MutableList<String>) -> MutableList<String>>
         } else {
-            val rule = reverseWords(Integer.valueOf(getInput("What number would you like to use as the divisor? ")))
+            val rule = reverseWords(num)
             rules = (rules + rule) as MutableList<(Int, MutableList<String>) -> MutableList<String>>
         }
     }
