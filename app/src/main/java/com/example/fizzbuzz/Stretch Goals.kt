@@ -1,5 +1,3 @@
-@file:Suppress("UNREACHABLE_CODE")
-
 package com.example.fizzbuzz
 
 /*
@@ -66,72 +64,89 @@ fun main() {
 */
 
 fun main() {
-    fun getInput(q: String): String? {
+    fun getInput(q: String): String {
         println(q)
-        return readLine()
+        val ans = readLine()
+        if (ans == null) {
+            return getInput(q)
+        } else {
+            return ans
+        }
     }
+
     //Rule templates
-    fun addWord(mod: Int, w: String?): (Int, MutableList<String?>) -> List<String?> {
-        return { input, results: MutableList<String?> ->
-            if (input % mod == 0) results + mutableListOf(w) else results
+    fun addWord(mod: Int, w: String): (Int, List<String>) -> List<String> {
+        return { input, results: List<String> ->
+            if (input % mod == 0) results + listOf(w) else results
         }
     }
-    fun singleWord(mod: Int, w: String?): (Int, List<String>) -> List<String?> {
-        return {input, results ->
-            if (input % mod == 0) mutableListOf(w) else results
+
+    fun singleWord(mod: Int, w: String): (Int, List<String>) -> List<String> {
+        return { input, results ->
+            if (input % mod == 0) listOf(w) else results
         }
     }
-    fun reverseWords(mod: Int): (Int) -> List<String> {
+
+    fun reverseWords(mod: Int): (Int, List<String>) -> List<String> {
         return { input, results ->
             if (input % mod == 0) results.asReversed() else results
         }
     }
-    fun betweenFandB(mod: Int, w: String?): (Int, List<String>) -> List<String> {
+
+    fun betweenFandB(mod: Int, w: String): (Int, List<String>) -> List<String> {
         return { input, results ->
             if (input % mod == 0) {
-                var bWords = results.dropWhile { !it?.startsWith('B')!! }
-                var fWords = results.takeWhile { !it?.startsWith('B')!! }
-                var word = mutableListOf<String>(w)
-                (fWords + word + bWords) as MutableList<String>
-            }else {results}
+                val bWords = results.dropWhile { !it.startsWith('B')}
+                val fWords = results.takeWhile { !it.startsWith('B')}
+                (fWords + w + bWords) as List<String>
+            } else {
+                results
+            }
         }
+    }
     // Get max output
     val max = Integer.valueOf(getInput("Up to what number do you want to print output?: "))
     // Find out what rules the user wants to implement
-    val rules = mutableListOf<(Int, MutableList<String>) -> MutableList<String>>()
+    var rules = listOf<(Int, List<String>) -> List<String>>()
     val tot = Integer.valueOf(getInput("How many rules would you like to implement? "))
     println("Please note rules will execute in the order given")
 
     for (x in 1..tot) {
-        var aim = getInput("Rule $x: what type of rule would you like to implement?\nA) add a word to the end of a phrase\nB) add a word after F-words but before B-words \nC) return only one word and then any words from later rules\nD) reverse the order of words")
-        var num = Integer.valueOf(getInput("What number would you like to use as the divisor? "))
-        var word = getInput("What word would you like to associate with this divisor? (N/A if option D) ")
+        val aim =
+            getInput("Rule $x: what type of rule would you like to implement?\nA) add a word to the end of a phrase\nB) add a word after F-words but before B-words \nC) return only one word and then any words from later rules\nD) reverse the order of words")
+        val num =
+            Integer.valueOf(getInput("What number would you like to use as the divisor? "))
+        val word =
+            getInput("What word would you like to associate with this divisor? (N/A if option D) ")
         if (aim == "A") {
             val rule = addWord(num, word)
-            rules = (rules + rule) as MutableList<(Int, MutableList<String>) -> MutableList<String>>
+            rules = (rules + rule)
         } else if (aim == "B") {
             val rule = betweenFandB(num, word)
-            rules = (rules + rule) as MutableList<(Int, MutableList<String>) -> MutableList<String>>
+            rules = (rules + rule)
         } else if (aim == "C") {
             val rule = singleWord(num, word)
-            rules = (rules + rule) as MutableList<(Int, MutableList<String>) -> MutableList<String>>
+            rules = (rules + rule)
         } else {
             val rule = reverseWords(num)
-            rules = (rules + rule) as MutableList<(Int, MutableList<String>) -> MutableList<String>>
+            rules = (rules + rule)
         }
     }
 
-    for (num in 1..max) {
-        var words = mutableListOf<String?>()
-
-
+    for (trial in 1..max) {
+        val words = rules.fold(
+            listOf<String>(),
+            { accumulator, rule ->
+                rule(trial, accumulator)
+            }
+        )
         // prints required output
         var phrase = ""
         for (word in words) {
             phrase += word
         }
-        if (phrase == "") {
-            println(num)
+        if (words.isEmpty()) {
+            println(trial)
         } else {
             println(phrase)
         }
