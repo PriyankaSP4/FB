@@ -23,17 +23,11 @@ fun main() {
 
         // adds Fezz for 13, after F words but before B words
         if (x%13 == 0) {
-            var pos = words.size
-            for (item in words) {
-                if (item[0] == 'B') {
-                    var index = words.indexOf(item)
-                    if (index < pos) {
-                        pos = index
-                    }
-                }
+            var bWords = words.dropWhile { it.startsWith('F')}
+            var fWords = words.takeWhile {it.startsWith('F')}
+            var fezz = mutableListOf<String>("Fezz")
+            words = (fWords + fezz + bWords) as MutableList<String>
             }
-            words.add(pos, "Fezz")
-        }
         //reverses for 17
         if (x%17 == 0) {
             words.asReversed()
